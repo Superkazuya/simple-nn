@@ -6,20 +6,20 @@
 #define NEURO(X) (1/(1+exp(-(X))))
 #define BP_COEFF(X) (X*(1-X))
 #define DENEURO(X) (BP_COEFF(NEURO(X)))
-#define RAND(X)   ((X)*((double)rand()/RAND_MAX)-0.5)
+#define RAND(X)   ((X)*((double)rand()/RAND_MAX))
 
-#define N_LAY 4
-#define N_MAX 5
+#define N_LAY 3
+#define N_MAX 20
 #define N_IN  2
 #define N_OUT 2
 
 #define ETA 0.1
 #define ERR_THRESH 0.0001
-#define ITER_THRESH 1000000
+#define ITER_THRESH 100000
 
-#define FILENAME "data.h"
+#define FILENAME "data.xml"
 
-const unsigned int neuron_num[N_LAY] = {N_IN, 5, 6, N_OUT};
+const unsigned int neuron_num[N_LAY] = {N_IN, 20, N_OUT};
 
 double weight[N_LAY-1][N_MAX][N_MAX];
 
@@ -169,10 +169,10 @@ main()
     err = 0;
     for(k = 0; k < 100; k++)
     {
-      for(i = 0; i < N_IN; i++)
-	input[i] = RAND(1.0); 
-      target[0] = abs(input[1]*input[0]);
-      target[1] = abs(input[0]);
+      input[0] = k%2;
+      input[1] = !input[0];
+      target[0] = !input[0];
+      target[1] = !input[1];
       err+= calc_forward_err();
       updata_err();
       updata_weight_n_thresh();
