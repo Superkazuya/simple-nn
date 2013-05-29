@@ -7,9 +7,9 @@
 #define DENEURO(X) (BP_COEFF(NEURO(X)))
 #define RAND(X)   ((X)*((double)rand()/RAND_MAX))
 
-#define ETA 0.1
-#define ERR_THRESH 0.0001
-#define ITER_THRESH 10000
+#define ETA 0.01
+#define ERR_THRESH 0.0002
+#define ITER_THRESH 400000
 
 double weight[N_LAY-1][N_MAX][N_MAX];
 
@@ -152,17 +152,17 @@ main()
   while( err > ERR_THRESH && counter++ < ITER_THRESH)
   {
     err = 0;
-    for(k = 0; k < 100; k++)
+    for(k = 0; k < 101; k++)
     {
-      input[0] = k%2;
-      input[1] = !input[0];
-      target[0] = !input[0];
-      target[1] = !input[1];
+      input[0] = RAND(1.0);
+      input[1] = RAND(1.0);
+      target[0] = input[0];
+      target[1] = input[1];
       err+= calc_forward_err();
       updata_err();
       updata_weight_n_thresh();
     }
-  printf("%d interations, err = %f\n", counter, (err));
+  printf("%d iterations, err = %f\n", counter, err);
   }
   store_weight_n_thresh();
   /*

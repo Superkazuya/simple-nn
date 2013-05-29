@@ -6,7 +6,7 @@
 int
 main()
 {
-  unsigned   i, n, k;
+  unsigned   i, n, j, m, k;
 
   double     weight[N_LAY-1][N_MAX][N_MAX];
   double     sum;
@@ -46,8 +46,8 @@ main()
   //print weight
   matrix = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
   for(i = 0; i < N_LAY-1; i++)
-    for(n = 0; n < neuron_num[i+1]; n++)
-      for(k = 0; k < neuron_num[i]; k++)
+    for(n = 0; n < N_MAX; n++)
+      for(k = 0; k < N_MAX; k++)
 	weight[i][n][k] = strtod(matrix, &matrix);
 
   node = node->next->next;
@@ -58,20 +58,27 @@ main()
     goto XML_ERROR;
   matrix = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
   for(i = 0; i < N_LAY; i++)
-    for(k = 0; k < neuron_num[i]; k++)
+    for(k = 0; k < N_MAX; k++)
       thresh[i][k] = strtod(matrix, &matrix);
   printf("XML file loaded successfully.\n");
 
-
-  for(k = 0; k < N_IN; k++) //first layer
-    output[0][k] = NEURO(input[k] - thresh[0][k]);
-  for(i = 0; i < N_LAY-1; i++) //following layer
-    for(n = 0; n < neuron_num[i+1]; n++)
+  for(m = 0; m < 11; m++)
+    for(j = 0; j < 11; j++)
     {
-      sum = thresh[i+1][n];
-      for(k = 0; k < neuron_num[i]; k++)
-	sum += weight[i][n][k]*output[i][k];
-      output[i+1][n] = NEURO(sum);
+      input[0] = 0.1*m;
+      input[1] = 0.1*j;
+      printf("%lf, %lf:", input[0], input[1]);
+      for(k = 0; k < N_IN; k++) //first layer
+	output[0][k] = NEURO(input[k] - thresh[0][k]);
+      for(i = 0; i < N_LAY-1; i++) //following layer
+	for(n = 0; n < neuron_num[i+1]; n++)
+	{
+	  sum = thresh[i+1][n];
+	  for(k = 0; k < neuron_num[i]; k++)
+	    sum += weight[i][n][k]*output[i][k];
+	  output[i+1][n] = NEURO(sum);
+	}
+      printf("%lf, %lf\n", output[N_LAY-1][0], output[N_LAY-1][1]);
     }
 
     return(EXIT_SUCCESS);
