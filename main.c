@@ -81,6 +81,18 @@ main()
       printf("%lf, %lf\n", output[N_LAY-1][0], output[N_LAY-1][1]);
     }
 
+      printf("\n");
+ for(i = 0; i < N_LAY-1; i++)
+ {
+    for(n = 0; n < N_MAX; n++)
+    {
+      for(k = 0; k < N_MAX; k++)
+	printf("%lf", weight[i][n][k]);
+      printf("\n");
+      }
+      printf("\n");
+      }
+
     return(EXIT_SUCCESS);
 XML_ERROR:
     printf("XML empty or corrupted.\n");

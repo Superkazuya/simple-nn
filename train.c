@@ -107,6 +107,7 @@ store_weight_n_thresh()
   fprintf(fp, "</thresh>\n");
   fprintf(fp, "</matrices>\n");
   fclose(fp);
+  printf("data successfully stored.\n");
 }
 
 
